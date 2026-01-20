@@ -1,28 +1,32 @@
 #ifndef NODE_H
 #define NODE_H
 
+template<typename T>
 class Node{
     private:
-        int id;
-        mutable Node* next;
+        mutable Node<T>* next{nullptr};
+        T data;
     public:
-        virtual ~Node() = default;
-        explicit Node(int id);
-        explicit Node(int id,Node* next);
-        inline virtual Node* getNext() const{return next;};
-        int getID(){return id;}
-        void setNext(Node* next);
+        virtual ~Node<T>()=default;
+        explicit Node(T data):data(data){};
+        Node(T dd,Node<T>* nn):data(dd),next(nn){};
+        inline virtual Node* getNext() const{return next;}
+        void setNext(Node* nn) const {next = nn;}
+        inline T getData() const{return data;}
 
 };
 
-class DNode: public Node{
+
+template <typename T>
+class DNode: public Node<T>{
      private:
-        mutable DNode* prev;
+        mutable DNode<T>* prev;
     public:
         ~DNode()= default;
-        explicit DNode(int id);
-        explicit DNode(int id,DNode* next,DNode* prev);
-        inline DNode* getPrev () const{return prev;};
-        void setPrev(DNode* new_prev);
+        explicit DNode(T data):Node<T>(data){}
+        explicit DNode(T data,DNode<T>* next,DNode<T>* prev):Node<T>(data,next),prev(prev){};
+        inline DNode<T>* getPrev () const{return prev;};
+        void setPrev(DNode<T>* new_prev) const {prev = new_prev; }
 };
+
 #endif
